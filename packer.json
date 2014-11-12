@@ -1,0 +1,47 @@
+{
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "region": "us-east-1",
+      "source_ami": "ami-2ccc7a44",
+      "instance_type": "m1.large",
+      "ssh_username": "ubuntu",
+      "ami_name": "ddgc built on {{timestamp}}",
+      "ami_block_device_mappings": [
+        {
+          "device_name": "/dev/sdb",
+          "virtual_name": "ephemeral0"
+        },
+        {
+          "device_name": "/dev/sdc",
+          "virtual_name": "ephemeral1"
+        }
+      ],
+      "ssh_timeout": "3m"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sudo apt-get -y install git",
+        "sudo git clone https://github.com/duckduckgo/community-platform /opt/community-platform"
+      ]
+    },
+    {
+      "type": "chef-solo",
+      "cookbook_paths": ["/opt/ddg/cookbooks/ddgc-chef-new", "/opt/ddg/cookbooks/ddgc-chef-new/vendored_cookbooks"],
+      "run_list": ["ddgc-chef-new"]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "psql -c \"CREATE USER ddgc WITH PASSWORD 'test';\"",
+        "psql -c \"ALTER USER ddgc CREATEDB\"",
+        "psql -c \"ALTER USER ddgc LOGIN\"",
+        "/opt/community-platform/script/ddgc_deploy_dev.pl"
+      ]
+    }
+  ]
+}
