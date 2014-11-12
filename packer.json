@@ -25,6 +25,7 @@
     {
       "type": "shell",
       "inline": [
+        "sleep 120",
         "sudo apt-get -y install git",
         "sudo git clone https://github.com/duckduckgo/community-platform /opt/community-platform"
       ]
