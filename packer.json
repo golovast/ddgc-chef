@@ -6,6 +6,7 @@
       "source_ami": "ami-2ccc7a44",
       "instance_type": "m1.large",
       "ssh_username": "ubuntu",
+      "temporary_key_pair_name": "/tmp/ssh_key",
       "ami_name": "ddgc built on {{timestamp}}",
       "ami_block_device_mappings": [
         {
@@ -23,16 +24,26 @@
 
   "provisioners": [
     {
+      "type": "file",
+      "source": "/tmp/ddgc-chef.tar.gz",
+      "destination": "/tmp/ddgc-chef.tar.gz"
+    },
+    {
       "type": "shell",
       "inline": [
         "sleep 120",
         "sudo apt-get -y install git",
-        "sudo git clone https://github.com/duckduckgo/community-platform /opt/community-platform"
+        "sudo apt-get update -y",
+        "sudo git clone https://github.com/duckduckgo/community-platform /opt/community-platform",
+        "mkdir /tmp/cookbook_uploads",
+        "tar -xvzf /tmp/ddgc-chef.tar.gz -C /tmp/",
+        "mv /tmp/ddgc-chef-new/vendored_cookbooks/* /tmp/cookbook_uploads",
+        "mv /tmp/ddgc-chef-new /tmp/cookbook_uploads"
       ]
     },
     {
       "type": "chef-solo",
-      "cookbook_paths": ["/opt/ddg/cookbooks/ddgc-chef-new", "/opt/ddg/cookbooks/ddgc-chef-new/vendored_cookbooks"],
+      "remote_cookbook_paths": ["/tmp/cookbook_uploads"],
       "run_list": ["ddgc-chef-new"]
     },
     {

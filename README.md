@@ -1,10 +1,10 @@
 # ddgc-chef-new-cookbook
 
-Cookbook for configured ddg community
+TODO: Enter the cookbook description here.
 
 ## Supported Platforms
 
-Ubunuty
+TODO: List your supported platforms.
 
 ## Attributes
 
@@ -16,16 +16,10 @@ Ubunuty
     <th>Default</th>
   </tr>
   <tr>
-    <td><tt>['ddgc-chef-new']['perlbew']['perls']</tt></td>
-    <td>array</td>
-    <td>which perls to install</td>
-    <td><tt>none</tt></td>
-  </tr>
-  <tr>
-    <td><tt>['ddgc-chef-new']['perlbew']['modules']</tt></td>
-    <td>array</td>
-    <td>which modules to install</td>
-    <td><tt>none</tt></td>
+    <td><tt>['ddgc-chef-new']['bacon']</tt></td>
+    <td>Boolean</td>
+    <td>whether to include bacon</td>
+    <td><tt>true</tt></td>
   </tr>
 </table>
 
@@ -43,19 +37,6 @@ Include `ddgc-chef-new` in your node's `run_list`:
 }
 ```
 
-To test with chef-solo, refer to the vendored_cookbook path in the repo. 
-To test with packer, run `packer build packer.json
-`
-## Todo
-1. fix the packer file and/or add code install
-2. test lvm
-3. add serverspec
-4. extract more values into attributes
-5. optimize nginx config
-6. logging on daemontool scripts
-
 ## License and Authors
 
-Author:: Arthur Freyman
-
-
+Author:: YOUR_NAME (<YOUR_EMAIL>)
